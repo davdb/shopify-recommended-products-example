@@ -1,6 +1,8 @@
 {{ 'recommended-products.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'recommended-products.js' | asset_url }}" defer="defer"></script>
 
+{% assign best_selling_products = collections.all.products | where: 'type', product.type | sort: 'best-selling' %}
+
 <div class="recommended_products_section__container">
   <div class="recommended-products-section__title-wrapper">
     <h2 class="recommended-products-section__title">
@@ -8,7 +10,50 @@
     </h2>
   </div>
 
-  <div class="recommended-products-section__silder-wrapper">slider</div>
+  <div class="recommended-products-section__silder-wrapper">
+    <div class="swiper">
+      <div class="swiper-wrapper">
+        {% for product in best_selling_products %}
+          <div class="swiper-slide" lazy="true">
+            <div>
+              <img
+                height="336px"
+                width="{{section.settings.image_size}}px"
+                class="recommended-products-section__product-image"
+                src="{{ product.featured_image | img_url: 'large' }}"
+                alt="{{ product.featured_image.alt | escape }}"
+                loading="lazy"
+              >
+              <div class="recommended-products-section__product-slide-info-wrapper">
+                <div class="recommended-products-section__product-info-wrapper">
+                  <h3 class="recommended-products-section__product-name">
+                    {{ product.title }}
+                  </h3>
+                  <p class="recommended-products-section__product-description">
+                    {{ product.description | strip_html }}
+                  </p>
+                </div>
+                <div class="recommended-products-section__price-wrapper">
+                  <p class="recommended-products-section__product-price">
+                    {{ product.price | strip_html | money }}
+                  </p>
+                  {% if product.price != product.price_max %}
+                    <p class="recommended-products-section__product-price-reduce">
+                      {{ product.price_max | strip_html | money }}
+                    </p>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="swiper-pagination"></div>
+
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+    </div>
+  </div>
   <div class="recommended-products-section__button-wrapper">
     <button class="button-ft button-ft__primary button-ft--uppercase button-ft--bold button-ft--transition">
       {{ section.settings.button_label }}

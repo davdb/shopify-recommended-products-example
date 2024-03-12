@@ -9,11 +9,13 @@
   "author": "Dawid Biernat",
   "license": "ISC",
   "devDependencies": {
+    "@types/swiper": "^6.0.0",
     "concurrently": "8.2.2",
     "css-loader": "^6.10.0",
     "mini-css-extract-plugin": "^2.8.1",
     "node-sass": "^9.0.0",
     "sass-loader": "^14.1.1",
+    "swiper": "^11.0.7",
     "ts-loader": "^9.5.1",
     "typescript": "^5.4.2",
     "webpack": "^5.90.3",
