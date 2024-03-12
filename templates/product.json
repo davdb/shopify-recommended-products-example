@@ -205,12 +205,19 @@
         "padding_top": 36,
         "padding_bottom": 28
       }
+    },
+    "recommended-products": {
+      "type": "recommended-products",
+      "settings": {
+        "title": "Polecane dla Ciebie"
+      }
     }
   },
   "order": [
     "main",
     "image-with-text",
     "multicolumn",
-    "related-products"
+    "related-products",
+    "recommended-products"
   ]
 }

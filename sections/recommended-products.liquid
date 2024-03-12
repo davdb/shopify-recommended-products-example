@@ -1,0 +1,19 @@
+<div>Recommended products {{ section.settings.title }}</div>
+
+{% schema %}
+{
+  "name": "Recommended products",
+  "tag": "section",
+  "class": "section",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title of section",
+      "default": "Polecane dla Ciebie"
+    }
+  ],
+  "presets": []
+}
+{% endschema %}
