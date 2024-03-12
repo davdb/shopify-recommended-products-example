@@ -1,10 +1,26 @@
-<div>Recommended products {{ section.settings.title }}</div>
+{{ 'recommended-products.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'recommended-products.js' | asset_url }}" defer="defer"></script>
+
+<div class="recommended_products_section__container">
+  <div class="recommended-products-section__title-wrapper">
+    <h2 class="recommended-products-section__title">
+      {{ section.settings.title }}
+    </h2>
+  </div>
+
+  <div class="recommended-products-section__silder-wrapper">slider</div>
+  <div class="recommended-products-section__button-wrapper">
+    <button class="button-ft button-ft__primary button-ft--uppercase button-ft--bold button-ft--transition">
+      {{ section.settings.button_label }}
+    </button>
+  </div>
+</div>
 
 {% schema %}
 {
   "name": "Recommended products",
   "tag": "section",
-  "class": "section",
+  "class": "section-ft section-ft--without_right_padding no-js-hidden",
   "limit": 1,
   "settings": [
     {
@@ -12,6 +28,12 @@
       "id": "title",
       "label": "Title of section",
       "default": "Polecane dla Ciebie"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label of section",
+      "default": "Zobacz wszystkie"
     }
   ],
   "presets": []

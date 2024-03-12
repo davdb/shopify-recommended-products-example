@@ -3,7 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
     entry: {
-        "webpack": "./modules"
+        "recommended-products": "./modules/recommended-products/"
     },
     output: {
         path: path.resolve(__dirname, './assets'),
@@ -30,6 +30,6 @@ module.exports = {
         ]
     },
     plugins: [
-        new MiniCssExtractPlugin({ filename: '[name].css.liquid' })
+        new MiniCssExtractPlugin({ filename: '[name].css' })
     ]
 };
