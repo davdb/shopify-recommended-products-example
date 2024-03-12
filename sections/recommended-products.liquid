@@ -1,4 +1,56 @@
 {{ 'recommended-products.css' | asset_url | stylesheet_tag }}
+
+<style>
+  :root {
+    --swiper-navigation-size: 24px;
+    --swiper-theme-color: #000000;
+  }
+
+  .swiper-button-prev {
+    top: 158px;
+    width: 64px;
+    height: 64px;
+    background: white;
+    border-radius: 50%;
+    border: 1px solid #ededed;
+  }
+
+  .swiper-button-prev.swiper-button-disabled {
+    opacity: 0;
+  }
+
+  .swiper-button-next.swiper-button-disabled {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .swiper-button-next {
+    width: 64px;
+    height: 64px;
+    top: 158px;
+    background: white;
+    border: 1px solid #ededed;
+    border-radius: 50%;
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .swiper-button-disabled {
+      opacity: 0;
+    }
+  }
+  .recommended-products-section__product-image {
+    display: block;
+    height: 336px;
+    width: 252px;
+  }
+
+  .swiper-slide {
+    width: 252px;
+  }
+</style>
 <script src="{{ 'recommended-products.js' | asset_url }}" defer="defer"></script>
 
 {% assign best_selling_products = collections.all.products | where: 'type', product.type | sort: 'best-selling' %}
