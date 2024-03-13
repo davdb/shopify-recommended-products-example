@@ -2,62 +2,16 @@
 
 <style>
   :root {
-    --swiper-navigation-size: 24px;
-    --swiper-theme-color: #000000;
-  }
-
-  .swiper-button-prev {
-    top: 158px;
-    width: 64px;
-    height: 64px;
-    background: white;
-    border-radius: 50%;
-    border: 1px solid #ededed;
-  }
-
-  .swiper-button-prev.swiper-button-disabled {
-    opacity: 0;
-  }
-
-  .swiper-button-next.swiper-button-disabled {
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-  }
-
-  .swiper-button-next {
-    width: 64px;
-    height: 64px;
-    top: 158px;
-    background: white;
-    border: 1px solid #ededed;
-    border-radius: 50%;
-
-    .swiper-button-disabled {
-      opacity: 0;
-    }
-  }
-  .recommended-products-section__product-image {
-    object-fit: cover;
-    object-position: center center;
-    width: 100%;
-    height: 100%;
-  }
-  .recommended-products-section__product-image-wrapper {
-    height: 336px;
-    width: 252px;
-  }
-  .swiper-slide {
-    width: 252px;
+    --swiper-navigation-size: 64px;
+    --swiper-navigation-icon-size: 24px;
+    --swiper-product-image-width: 252px;
+    --swiper-product-image-height: 336px;
+    --swiper-theme-color: var(--black);
   }
 </style>
 <script src="{{ 'recommended-products.js' | asset_url }}" defer="defer"></script>
 
 {% assign current_product_type = product.type %}
-{% assign current_product_tags = product.tags %}
-
-{{ current_product_type | json }}
-{{ current_product_tags | json }}
-
 {% assign current_product = product %}
 {% assign current_product_tags = current_product.tags %}
 {% assign current_product_collections = current_product.collections | map: 'handle' %}
@@ -105,7 +59,7 @@
 
 {% assign filtered_product_handles = filtered_products | split: ',' %}
 
-<div class="recommended_products_section__container">
+<div class="recommended-products-section">
   <div class="recommended-products-section__title-wrapper">
     <h2 class="recommended-products-section__title">
       {{ section.settings.title }}
