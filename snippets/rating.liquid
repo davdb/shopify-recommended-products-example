@@ -1,0 +1,70 @@
+<style>
+  .rating {
+    unicode-bidi: bidi-override;
+  }
+
+  .star {
+    display: inline-block;
+    font-size: 20px;
+    color: gold;
+  }
+</style>
+
+<div id="star-rating-product-{{ product_id }}">
+  <!-- Pętla generująca gwiazdki -->
+  {% for i in (1..5) %}
+    <svg
+      id="star{{ i }}-{{ product_id }}"
+      class="star"
+      width="16"
+      height="15"
+      viewBox="0 0 16 15"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <defs>
+        <linearGradient id="{{ product_id }}-gradient{{ i }}" x1="0%" y1="0%" x2="0%" y2="0%">
+          <stop offset="50%" stop-color="#F1C40F" />
+          <stop offset="50%" stop-color="transparent" />
+        </linearGradient>
+      </defs>
+
+      <path id="star{{ i }}-{{ product_id }}-path" d="M8 0L10.3982 4.69921L15.6085 5.52786L11.8803 9.26079L12.7023 14.4721L8 12.08L3.29772 14.4721L4.11969 9.26079L0.391548 5.52786L5.60184 4.69921L8 0Z" fill="#D9D9D9"/>
+
+      <path d="M8 0L10.3982 4.69921L15.6085 5.52786L11.8803 9.26079L12.7023 14.4721L8 12.08L3.29772 14.4721L4.11969 9.26079L0.391548 5.52786L5.60184 4.69921L8 0Z" fill="url(#{{ product_id }}-gradient{{ i }})"/>
+    </svg>
+  {% endfor %}
+</div>
+
+<script>
+  function roundToNearestHalf(number) {
+    if (number < 0 || number > 5) {
+      return 0;
+    }
+
+    const rounded = Math.ceil(number * 2) / 2;
+    return rounded > 5 ? 5 : rounded;
+  }
+
+  var rating = roundToNearestHalf({{ rating_value }});
+
+  var starSVGs = document.querySelectorAll('#star-rating-product-{{ product_id }} .star');
+
+  starSVGs.forEach(function(starSVG, index) {
+    var starPath = starSVG.querySelector('path[id$="-path"]');
+    if (!starPath) return;
+
+    if (index < rating) {
+      if (index === Math.floor(rating) && index !== rating) {
+        var gradient = starSVG.querySelector('linearGradient');
+        if (gradient) {
+          gradient.setAttribute('x2', '100%');
+        }
+      } else {
+        starPath.style.fill = '#F1C40F';
+    }
+    } else {
+      starPath.style.fill = '#D9D9D9';
+    }
+  });
+</script>
