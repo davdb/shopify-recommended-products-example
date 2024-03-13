@@ -32,28 +32,78 @@
     border: 1px solid #ededed;
     border-radius: 50%;
 
-    svg {
-      width: 24px;
-      height: 24px;
-    }
-
     .swiper-button-disabled {
       opacity: 0;
     }
   }
   .recommended-products-section__product-image {
-    display: block;
+    object-fit: cover;
+    object-position: center center;
+    width: 100%;
+    height: 100%;
+  }
+  .recommended-products-section__product-image-wrapper {
     height: 336px;
     width: 252px;
   }
-
   .swiper-slide {
     width: 252px;
   }
 </style>
 <script src="{{ 'recommended-products.js' | asset_url }}" defer="defer"></script>
 
-{% assign best_selling_products = collections.all.products | where: 'type', product.type | sort: 'best-selling' %}
+{% assign current_product_type = product.type %}
+{% assign current_product_tags = product.tags %}
+
+{{ current_product_type | json }}
+{{ current_product_tags | json }}
+
+{% assign current_product = product %}
+{% assign current_product_tags = current_product.tags %}
+{% assign current_product_collections = current_product.collections | map: 'handle' %}
+{% assign filtered_products = '' %}
+{% assign collectionOfProducts = collections.all.products
+  | where: 'type', current_product_type
+  | sort: 'best-selling'
+%}
+{% assign product_limit = section.settings.limit %}
+{% assign product_count = 0 %}
+
+{% for collection_product in collectionOfProducts %}
+  {% if product_count >= product_limit %}
+    {% break %}
+  {% endif %}
+
+  {% if collection_product.type == current_product_type and collection_product.handle != current_product.handle %}
+    {% assign shared_tag_found = false %}
+    {% assign shared_collection_found = false %}
+
+    {% if section.settings.filter == 'by-tags' %}
+      {% for tag in collection_product.tags %}
+        {% if current_product_tags contains tag %}
+          {% assign shared_tag_found = true %}
+          {% break %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
+    {% if section.settings.filter == 'by-collection' %}
+      {% for collection in collection_product.collections %}
+        {% if current_product_collections contains collection.handle %}
+          {% assign shared_collection_found = true %}
+          {% break %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
+    {% if shared_tag_found or shared_collection_found or section.settings.filter == 'default' %}
+      {% assign filtered_products = filtered_products | append: collection_product.handle | append: ',' %}
+      {% assign product_count = product_count | plus: 1 %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+{% assign filtered_product_handles = filtered_products | split: ',' %}
 
 <div class="recommended_products_section__container">
   <div class="recommended-products-section__title-wrapper">
@@ -65,33 +115,49 @@
   <div class="recommended-products-section__silder-wrapper">
     <div class="swiper">
       <div class="swiper-wrapper">
-        {% for product in best_selling_products %}
+        {% for handle in filtered_product_handles %}
+          {% assign productArr = collections.all.products | where: 'handle', handle %}
+          {% assign product = productArr | first %}
           <div class="swiper-slide" lazy="true">
             <div>
-              <img
-                height="336px"
-                width="{{section.settings.image_size}}px"
-                class="recommended-products-section__product-image"
-                src="{{ product.featured_image | img_url: 'large' }}"
-                alt="{{ product.featured_image.alt | escape }}"
-                loading="lazy"
-              >
+              <div class="recommended-products-section__product-image-wrapper">
+                <img
+                  class="recommended-products-section__product-image"
+                  height="{{ product.featured_image.height }}"
+                  width="{{ product.featured_image.width }}"
+                  src="{{ product.featured_image | img_url: 'large' }}"
+                  alt="{{ product.featured_image.alt | escape }}"
+                  loading="lazy"
+                >
+                <div class="recommended-products-section__product-image-tags-wrapper">
+                  {% if product.compare_at_price > product.price %}
+                    {% assign discount = product.compare_at_price | minus: product.price %}
+                    {% assign discount_percent = discount | times: 100 | divided_by: product.compare_at_price %}
+                    <div class="recommended-products-section__product-image-tag">
+                      -{{ discount_percent | round: 2 }}% zniżki
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
               <div class="recommended-products-section__product-slide-info-wrapper">
+                {% render 'rating', rating_value: 4.35, product_id: product.id %}
                 <div class="recommended-products-section__product-info-wrapper">
                   <h3 class="recommended-products-section__product-name">
                     {{ product.title }}
                   </h3>
                   <p class="recommended-products-section__product-description">
-                    {{ product.description | strip_html }}
+                    {% assign splitted_description = product.description | split: '.' %}
+                    {% assign first_part_description = splitted_description.first %}
+                    {{ first_part_description | strip_html }}
                   </p>
                 </div>
                 <div class="recommended-products-section__price-wrapper">
                   <p class="recommended-products-section__product-price">
                     {{ product.price | strip_html | money }}
                   </p>
-                  {% if product.price != product.price_max %}
+                  {% if product.compare_at_price > product.price %}
                     <p class="recommended-products-section__product-price-reduce">
-                      {{ product.price_max | strip_html | money }}
+                      {{ product.compare_at_price | strip_html | money }}
                     </p>
                   {% endif %}
                 </div>
@@ -101,7 +167,6 @@
         {% endfor %}
       </div>
       <div class="swiper-pagination"></div>
-
       <div class="swiper-button-prev"></div>
       <div class="swiper-button-next"></div>
     </div>
@@ -131,6 +196,35 @@
       "id": "button_label",
       "label": "Button label of section",
       "default": "Zobacz wszystkie"
+    },
+    {
+      "type": "select",
+      "id": "filter",
+      "label": "Filter by",
+      "options": [
+        {
+          "value": "by-collection",
+          "label": "By collection"
+        },
+        {
+          "value": "by-tags",
+          "label": "By tags"
+        },
+        {
+          "value": "default",
+          "label": "default"
+        }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "min": 2,
+      "max": 20,
+      "step": 2,
+      "label": "Slider elements",
+      "default": 10
     }
   ],
   "presets": []

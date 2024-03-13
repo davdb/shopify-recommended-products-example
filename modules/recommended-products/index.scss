@@ -108,3 +108,17 @@
   .recommended-products-section__product-info-wrapper {
     height: 74px;
   }
+
+  .recommended-products-section__product-image-tag {
+    font-size: 14px;
+    line-height: 19px;
+    font-weight: 700;
+    color: #fff;
+    background-color: #E35249;
+    padding: 4px 8px;
+    border-radius: 4px;
+
+    position: absolute;
+    top: 12px;
+    left: 12px;
+  }
