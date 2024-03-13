@@ -1,4 +1,7 @@
 # Shopify Recommended Products Module
+
+Demo: [https://yo-ka-store.myshopify.com/collections/all](https://yo-ka-store.myshopify.com/collections/all)
+
 ## Spis treści
 1. [Opis](#Opis)
 2. [Wymagania](#Wymagania)
