@@ -8,5 +8,11 @@
   },
   "[liquid]": {
     "editor.formatOnSave": true
-  }
+  },
+  "[scss]": {
+    "editor.formatOnSave": true
+  },
+  "[typescript]": {
+    "editor.formatOnSave": true
+  },
 }

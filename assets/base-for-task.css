@@ -61,35 +61,3 @@
       padding: 64px 0 64px 16px;
     }
 }
-
-.button-ft {
-    font-size: 12px;
-    line-height: 14px;
-    letter-spacing: 0.2;
-    padding: 19px 20px;
-    text-align: center;
-    border: 0.5px solid #000;
-    }
-    
-    .button-ft__primary {
-    color: white;
-    background-color: #000;
-    }
-    
-    .button-ft__primary:hover {
-    color: black;
-    background-color: white;
-    }
-    
-    .button-ft--uppercase {
-    text-transform: uppercase;
-    }
-    
-    .button-ft--transition {
-    transition: 0.3s ease-in-out;
-    }
-    
-    .button-ft--bold {
-    font-weight: 700;
-    }
-    

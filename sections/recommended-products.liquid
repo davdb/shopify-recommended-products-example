@@ -73,7 +73,7 @@
           {% assign productArr = collections.all.products | where: 'handle', handle %}
           {% assign product = productArr | first %}
           <div class="swiper-slide" lazy="true">
-            <div>
+            <a href="{{ product.url }}" class="full-unstyled-link">
               <div class="recommended-products-section__product-image-wrapper">
                 <img
                   class="recommended-products-section__product-image"
@@ -116,7 +116,7 @@
                   {% endif %}
                 </div>
               </div>
-            </div>
+            </a>
           </div>
         {% endfor %}
       </div>
@@ -125,10 +125,13 @@
       <div class="swiper-button-next"></div>
     </div>
   </div>
-  <div class="recommended-products-section__button-wrapper">
-    <button class="button-ft button-ft__primary button-ft--uppercase button-ft--bold button-ft--transition">
+  <div class="recommended-products-section__link-wrapper">
+    <a
+      href="/collections/all?type={{ product.type | url_encode }}"
+      class="recommended-products-section__link"
+    >
       {{ section.settings.button_label }}
-    </button>
+    </a>
   </div>
 </div>
 
